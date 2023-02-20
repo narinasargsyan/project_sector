@@ -1,17 +1,31 @@
 import * as express from "express";
 const userRouter = express.Router();
 import UserController from "../controller/users.controller";
-import registerMiddleware from "../middleweares/validationMiddlewear";
+import validate from "../middleweares/validation/validate";
 import auth from "../middleweares/authentication.middlewear";
+import { canEditProfile } from "../middleweares/canEdit.middleware";
+import { MediaService } from "../services/s3Service";
 
-const user = new UserController();
-const { reIssueToken, authenticate } = auth;
+const mediaService = new MediaService();
+const user = new UserController(mediaService);
 
-userRouter.post("/signup", registerMiddleware, user.signUp);
-userRouter.post("/signin", user.signIn);
-userRouter.post("/signin/new_token", reIssueToken, user.refreshToken);
+const { authenticate } = auth;
+
+userRouter.get("/", user.sortByRegistrationDate);
+
+userRouter.post("/sign-up", validate("signUpUserSchema"), user.signUp);
+userRouter.post("/sign-in", validate("signInUserSchema"), user.signIn);
+
 userRouter.use(authenticate);
-userRouter.get("/info", user.info);
-userRouter.get("/logout", user.logout);
+
+userRouter.put("/profile/:id/photo", canEditProfile, user.changeProfilePicture);
+userRouter.put(
+  "/profile/:id",
+  validate("editUserSchema"),
+  canEditProfile,
+  user.editUser
+);
+
+userRouter.get("/profile/:id", user.getUser);
 
 export { userRouter };

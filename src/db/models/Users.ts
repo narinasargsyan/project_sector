@@ -1,56 +1,52 @@
 import { DataTypes as Sequelize } from "sequelize";
 
 const usersModel = {
-    id: {
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-        type: Sequelize.INTEGER,
-    },
-    firstName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    lastName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    gender: {
-        type: Sequelize.ENUM,
-        values: ['woman', 'man', 'other'],
-    },
-    photo: {
-        type: Sequelize.STRING,
-        allowNull: true,
-    },
-    date: {
-        type: Sequelize.NUMBER,
-        allowNull: true,
-    },
-    createdAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-    },
-    updateAt: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-    },
+  id: {
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+    type: Sequelize.INTEGER,
+  },
+  firstName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  lastName: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  gender: {
+    type: Sequelize.ENUM,
+    values: ["male", "female"],
+  },
+  photo: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  createdAt: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.NOW,
+  },
+  updateAt: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.NOW,
+  },
 };
 
 const usersOptions = {
-    timestamps: false,
-    schema: "public",
-    freezeTableName: true,
+  timestamps: false,
+  schema: "public",
+  freezeTableName: true,
 };
 
 export const getModel = (seq) => {
-    return seq.define("Users", usersModel, usersOptions);
+  return seq.define("Users", usersModel, usersOptions);
 };
